@@ -6,6 +6,7 @@ const cors = require('cors');
 const User = require('./models/User');
 const Call = require('./models/Calls');
 const userRoutes = require('./routes/userRoutes');
+const callRoutes = require('./routes/callRoutes');
 
 dotenv.config(); // Load env variables at the top
 
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use('/api/calls', callRoutes);
 const PORT = process.env.PORT || 7990;
 
 // Trigger call — creates call record & returns callId
