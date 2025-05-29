@@ -1,8 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const cors = require('cors');
+
 const User = require('./models/User');
 const userRoutes = require('./routes/userRoutes');
+
+dotenv.config(); // Load env variables at the top
 
 const app = express();
 
@@ -19,11 +23,10 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/users', userRoutes);
+const PORT = process.env.PORT || 7990;
 
-const PORT = 7990;
-
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/callApp', {
+// Connect to MongoDB using the URI from .env
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -67,4 +70,4 @@ mongoose.connect('mongodb://localhost:27017/callApp', {
 })
 .catch(err => console.error('MongoDB connection error:', err));
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
