@@ -29,6 +29,7 @@ const PORT = process.env.PORT || 7990;
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000, // 30 seconds timeout
 })
 .then(async () => {
   console.log('MongoDB connected successfully');
