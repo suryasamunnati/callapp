@@ -28,51 +28,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/calls', callRoutes);
 const PORT = process.env.PORT || 7990;
 
-// Trigger call — creates call record & returns callId
-app.post('/api/trigger-call', async (req, res) => {
-  const { callerId, customerNumber } = req.body;
-  if (!callerId || !customerNumber) {
-    return res.status(400).json({ error: 'Missing callerId or customerNumber' });
-  }
-
-  const call = new Call({
-    callerId,
-    customerNumber,
-    status: 'initiated',
-    startedAt: new Date(),
-  });
-
-  await call.save();
-
-  res.json({ message: 'Call initiated', callId: call._id });
-});
-
-// Update call status
-app.post('/api/call-status', async (req, res) => {
-  const { callId, status, endedAt, recordingUrl } = req.body;
-  if (!callId || !status) {
-    return res.status(400).json({ error: 'Missing callId or status' });
-  }
-
-  const call = await Call.findById(callId);
-  if (!call) return res.status(404).json({ error: 'Call not found' });
-
-  call.status = status;
-  if (endedAt) call.endedAt = new Date(endedAt);
-  if (recordingUrl) call.recordingUrl = recordingUrl;
-
-  await call.save();
-
-  res.json({ message: 'Call status updated' });
-});
-
-// Get call history by callerId
-app.get('/api/call-history/:callerId', async (req, res) => {
-  const { callerId } = req.params;
-  const calls = await Call.find({ callerId }).sort({ startedAt: -1 });
-  res.json(calls);
-});
-
 // Connect to MongoDB using the URI from .env
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
