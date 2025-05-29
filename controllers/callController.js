@@ -84,3 +84,13 @@ exports.getCallHistory = async (req, res) => {
   const calls = await Call.find({ callerId }).sort({ startedAt: -1 });
   res.json(calls);
 };
+
+exports.getAllCallHistory = async (req, res) => {
+  try {
+    const calls = await Call.find({}).sort({ startedAt: -1 });
+    res.json(calls);
+  } catch (error) {
+    console.error('Error fetching all call history:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
