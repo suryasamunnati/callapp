@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 
 const User = require('./models/User');
+const Call = require('./models/Calls');
 const userRoutes = require('./routes/userRoutes');
 
 dotenv.config(); // Load env variables at the top
